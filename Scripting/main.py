@@ -3,16 +3,20 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service
 
 
-driver = webdriver.Chrome()
+chrome_path = "C:\\Users\\Legion\\Desktop\\chromedriver-win32\\chromedriver-win32\\chromedriver.exe"
+
+chrome_service = Service(chrome_path)
+
+driver = webdriver.Chrome(service=chrome_service)
 
 
 try:
     # I go to the website start
     driver.get('https://getpass.civic.com/status?chain=polygon')
-    time.sleep(10)
-    # I go to the website end
+    time.sleep(3)
 
     # Selecting captcha start
     klick_captcha = WebDriverWait(driver, 3).until(
@@ -87,6 +91,48 @@ try:
     get_pass.click()
     time.sleep(3)
 
+    # Klick_checkbox
+    checkbox = WebDriverWait(driver, 3).until(
+        EC.element_to_be_clickable((By.XPATH, "//input[@data-testid='TERMS_AND_CONDITIONS_CHECKBOX']"))
+    )
+
+    checkbox.click()
+    time.sleep(3)
+
+    # Start_verification
+    verification = WebDriverWait(driver, 3).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[@data-testid='START_BUTTON']"))
+    )
+
+    verification.click()
+    time.sleep(3)
+
+    # Button continue
+    button_continue = WebDriverWait(driver, 3).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[@data-testid='OK_BUTTON']"))
+    )
+
+    button_continue.click()
+    time.sleep(3)
+
+    # Understand button
+    understand_button = WebDriverWait(driver, 3).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[text()='Понятно']"))
+    )
+
+    understand_button.click()
+    time.sleep(3)
+
+    # Sign button
+    sign_button = WebDriverWait(driver, 3).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[@data-testid='page-container-footer-next' and text()='Подписать']"))
+    )
+
+    sign_button.click()
+    time.sleep(3)
+
+
+    driver.refresh()
 
 
 except Exception as ex:
